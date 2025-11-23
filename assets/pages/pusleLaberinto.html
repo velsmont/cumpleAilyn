@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Laberinto 20×20 — Móvil</title>
+<style>
+  :root{
+    --bg:#f7fbff;
+    --wall:#2b2f36;
+    --path:#ffffff;
+    --goal:#a6e7a6;
+    --ui:#2b7cff;
+    --btn-bg:#ffffff;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  html,body{ height:450px; margin:0; background:var(--bg); -webkit-tap-highlight-color: transparent; }
+  .app {
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    padding:12px;
+    box-sizing:border-box;
+  }
+  h1{ margin:8px 0 6px; font-size:18px; color:#123; text-align:center; }
+  
+  
+  .card {
+            background-image: url('../img/banCelebration.png');
+            width: 450px;
+            margin: 20px;
+            padding: 2px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+  
+  
+
+
+  /* canvas area */
+  .canvas-box {
+    width:100%;
+    max-width:760px;
+    background:linear-gradient(#eef6ff,#ffffff);
+    border-radius:12px;
+    padding:10px;
+    box-shadow:0 10px 30px rgba(20,30,50,0.06);
+    box-sizing:border-box;
+  }
+  canvas { width:100%; height:auto; display:block; border-radius:6px; background:transparent; touch-action:none; }
+
+  /* controls */
+  .controls {
+    margin-top:10px;
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .ctrl-btn {
+    width:54px;
+    height:54px;
+    border-radius:10px;
+    background:var(--btn-bg);
+    border:1px solid rgba(0,0,0,0.06);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    color:var(--ui);
+    box-shadow:0 6px 12px rgba(30,60,120,0.06);
+    user-select:none;
+    -webkit-user-select:none;
+  }
+  .ctrl-grid {
+    display:grid;
+    grid-template-columns: repeat(3, 54px);
+    gap:8px;
+    align-items:center;
+    justify-content:center;
+  }
+  .info {
+    margin-top:8px;
+    color:#444;
+    font-size:14px;
+    text-align:center;
+  }
+
+  /* overlay celebration */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.36);
+    z-index: 9999;
+    padding:16px;
+  }
+  .overlay.show { display:flex; }
+  .cele {
+    background:white;
+    padding:18px;
+    border-radius:12px;
+    max-width:420px;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,0.25);
+  }
+  .cele img { width:220px; max-width:80%; display:block; margin:10px auto 6px; }
+  .cele h2 { margin:6px 0; font-size:20px; color:#c93535; }
+  .cele p { margin:0 0 12px; color:#444; }
+
+  .btn-primary {
+    background: #4caf50;
+    color:#fff;
+    border:0;
+    padding:10px 16px;
+    border-radius:10px;
+    font-size:16px;
+    cursor:pointer;
+  }
+
+  /* responsive tweaks */
+  @media (max-width:520px){
+    .ctrl-grid { gap:6px; grid-template-columns: repeat(3, 48px); }
+    .ctrl-btn { width:48px; height:48px; font-size:18px; border-radius:8px; }
+    .cele img { width:160px; }
+  }
+</style>  
+</head>
+<body>
+  <div class="app">
+    <div class="card">
+      <h1>Ayuda a Ailyn a encontrar la capibara..</h1>
+
+      <div class="canvas-box" id="canvasBox">
+        <!-- Canvas: tamaño fijo en pixels (se ajusta en CSS) -->
+        <canvas id="maze" width="800" height="800" aria-label="Laberinto"></canvas>
+      </div>
+
+      <div class="controls" aria-hidden="false">
+        <div class="ctrl-grid" role="group" aria-label="Controles">
+          <div></div>
+          <div class="ctrl-btn" id="btn-up">↑</div>
+          <div></div>
+
+          <div class="ctrl-btn" id="btn-left">←</div>
+          <div class="ctrl-btn" id="btn-down">↓</div>
+          <div class="ctrl-btn" id="btn-right">→</div>
+        </div>
+      </div>
+
+      <div class="info">Usa los botones para noverte.</div>
+    </div>
+  </div>
+
+  <!-- Celebration overlay -->
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true">
+    <div class="cele" id="cele">
+      <h2>¡Lo lograste..! 🎉</h2>
+      <p>Si llegaste hasta aqui..dale siguiente para una sorpresa..</p>
+      <!-- capibara image (meta) -->
+      <div>
+
+        <img src="../img/AilynCapibara.png" alt="">
+      </div>
+
+      <div style="margin-top:10px;">
+
+
+        <button class="btn-primary" id="nextBtn" alt="">Siguiente</button>
+      
+      </div>
+    </div>
+  </div>
+
+  <!-- confetti library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+  (function(){
+    // CONFIG
+    const CHAR_SRC = '../img/AilynRun.png'; // imagen niña (confirmada)
+    const GOAL_IMG = '../img/capi-3.png'; // capibara (confirmada)
+    const COLS = 20;
+    const ROWS = 20;
+    const canvas = document.getElementById('maze');
+    const ctx = canvas.getContext('2d');
+
+    // adapt canvas inner drawing size to square
+    const size = Math.min(canvas.width, canvas.height);
+    canvas.width = size;
+    canvas.height = size;
+
+    // compute cell size
+    const cell = Math.floor(size / COLS);
+
+    // A simple 20x20 maze map (0=path,1=wall,2=goal) - handcrafted for playability
+    // You can replace this map by any other 20x20 array of 0/1/2.
+    // Note: rows length must be ROWS and each row length COLS.
+    const map = [
+      // 20 columns per row
+      [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+      [0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1],
+      [1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1,1,0,1],
+      [1,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,1,0,1],
+      [1,0,1,1,1,0,1,0,1,0,1,0,1,1,1,1,0,1,0,1],
+      [1,0,1,0,0,0,1,0,1,0,0,0,1,0,0,1,0,1,0,1],
+      [1,0,1,0,1,1,1,0,1,1,1,1,1,0,1,1,0,1,0,1],
+      [1,0,1,0,1,0,0,0,0,0,1,0,0,0,0,0,0,1,0,2],
+      [1,0,1,0,1,0,1,1,1,0,1,0,1,1,1,1,0,1,1,1],
+      [1,0,0,0,1,0,0,0,1,0,1,0,0,0,0,1,0,1,0,1],
+      [1,1,1,0,1,1,1,0,1,0,1,1,1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,1,0,1],
+      [1,0,1,1,1,0,1,1,1,1,1,1,0,1,1,1,0,1,0,1],
+      [1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1],
+      [1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,1,0,1,0,1],
+      [1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,1,0,1],
+      [1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,0,1],
+      [1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,1],
+      [1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,0,0,0,0,1],
+      [1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,0,1]
+    ];
+
+    // Find start = first 0 from top-left scanning, and goal (value 2)
+    let start = {x:0,y:0};
+    outer: for(let r=0;r<ROWS;r++){
+      for(let c=0;c<COLS;c++){
+        if(map[r][c]===0){ start={x:c,y:r}; break outer; }
+      }
+    }
+    let goal = {x:COLS-1,y:ROWS-1};
+    for(let r=0;r<ROWS;r++){
+      for(let c=0;c<COLS;c++){
+        if(map[r][c]===2){ goal={x:c,y:r}; break; }
+      }
+    }
+
+    // player state
+    let player = { x: start.x, y: start.y };
+    let facing = 1; // 1 right, -1 left
+
+    // load images
+    const img = new Image();
+    img.src = CHAR_SRC;
+    let imgLoaded = false;
+    img.onload = ()=> { imgLoaded = true; draw(); };
+
+    const capy = new Image();
+    capy.src = GOAL_IMG;
+    let capyLoaded = false;
+    capy.onload = ()=> { capyLoaded = true; draw(); };
+
+    // draw functions
+    function drawGrid(){
+      ctx.clearRect(0,0,size,size);
+      for(let r=0;r<ROWS;r++){
+        for(let c=0;c<COLS;c++){
+          const x = c*cell, y = r*cell;
+          const v = map[r][c];
+          if(v===1){
+            ctx.fillStyle = varColor('--wall','#2b2f36');
+            ctx.fillRect(x,y,cell,cell);
+          } else if(v===2){
+            ctx.fillStyle = varColor('--goal','#a6e7a6');
+            ctx.fillRect(x,y,cell,cell);
+          } else {
+            ctx.fillStyle = varColor('--path','#ffffff');
+            ctx.fillRect(x,y,cell,cell);
+          }
+          ctx.strokeStyle = 'rgba(0,0,0,0.04)';
+          ctx.strokeRect(x,y,cell,cell);
+        }
+      }
+    }
+
+    function drawGoalImage(){
+      if(capyLoaded){
+        const px = goal.x*cell, py = goal.y*cell;
+        const padding = Math.max(2, Math.floor(cell*0.06));
+        const sizeImg = cell - padding*2;
+        ctx.drawImage(capy, px+padding, py+padding, sizeImg, sizeImg);
+      }
+    }
+
+    function drawPlayer() {
+  const px = player.x * cell;
+  const py = player.y * cell;
+  const padding = Math.floor(cell * 0.10);
+  const sizeImg = cell - padding * 2;
+
+  ctx.save(); // seguridad
+
+  if (imgLoaded) {
+    if (facing < 0) {
+      // invertir horizontalmente
+      ctx.translate(px + cell, py);
+      ctx.scale(-1, 1);
+      ctx.drawImage(img, padding, padding, sizeImg, sizeImg);
+    } else {
+      ctx.drawImage(img, px + padding, py + padding, sizeImg, sizeImg);
+    }
+  } else {
+    ctx.fillStyle = "#ff6b6b";
+    ctx.beginPath();
+    ctx.arc(px + cell/2, py + cell/2, cell/3, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  ctx.restore(); // RESTAURA SIEMPRE
+}
+
+    function draw(){
+      drawGrid();
+      drawGoalImage();
+      drawPlayer();
+    }
+
+    // helpers
+    function varColor(name, fallback){
+      try {
+        return getComputedStyle(document.documentElement).getPropertyValue(name) || fallback;
+      } catch(e) { return fallback; }
+    }
+
+    function canMoveTo(nx, ny){
+      if(nx<0||ny<0||nx>=COLS||ny>=ROWS) return false;
+      return map[ny][nx] !== 1;
+    }
+
+    function move(dx, dy){
+      const nx = player.x + dx, ny = player.y + dy;
+      if(canMoveTo(nx,ny)){
+        player.x = nx; player.y = ny;
+        if(dx>0) facing=1; if(dx<0) facing=-1;
+        draw();
+        checkGoal();
+      } else {
+        // optional small shake animation: flash cell
+        flashCell(player.x, player.y);
+      }
+    }
+
+    function flashCell(cx, cy){
+      const x = cx*cell, y = cy*cell;
+      ctx.save();
+      ctx.fillStyle = 'rgba(255,100,100,0.12)';
+      ctx.fillRect(x,y,cell,cell);
+      setTimeout(()=> draw(), 160);
+      ctx.restore();
+    }
+
+    function checkGoal(){
+      if(player.x===goal.x && player.y===goal.y){
+        onWin();
+      }
+    }
+
+    // controls (keyboard + touch buttons)
+    window.addEventListener('keydown', (e)=>{
+      if(e.key === 'ArrowLeft') move(-1,0);
+      if(e.key === 'ArrowRight') move(1,0);
+      if(e.key === 'ArrowUp') move(0,-1);
+      if(e.key === 'ArrowDown') move(0,1);
+    });
+
+    document.getElementById('btn-up').addEventListener('click', ()=> move(0,-1));
+    document.getElementById('btn-left').addEventListener('click', ()=> move(-1,0));
+    document.getElementById('btn-down').addEventListener('click', ()=> move(0,1));
+    document.getElementById('btn-right').addEventListener('click', ()=> move(1,0));
+
+    // reset and auto-solver
+    document.getElementById('reset')?.addEventListener('click', ()=> {
+      player.x = start.x; player.y = start.y; draw();
+    });
+
+    // simple BFS solver used by auto-resolve if you add a button later
+    function bfsPath(from, to){
+      const q = [];
+      const visited = Array.from({length:ROWS}, ()=> Array(COLS).fill(false));
+      const parent = Array.from({length:ROWS}, ()=> Array(COLS).fill(null));
+      q.push(from);
+      visited[from.y][from.x] = true;
+      const dirs = [[1,0],[-1,0],[0,1],[0,-1]];
+      while(q.length){
+        const cur = q.shift();
+        if(cur.x === to.x && cur.y === to.y){
+          const p = [];
+          let node = cur;
+          while(node){
+            p.push({x:node.x,y:node.y});
+            node = parent[node.y][node.x];
+          }
+          p.reverse();
+          return p;
+        }
+        for(const d of dirs){
+          const nx = cur.x + d[0], ny = cur.y + d[1];
+          if(nx<0||ny<0||nx>=COLS||ny>=ROWS) continue;
+          if(visited[ny][nx]) continue;
+          if(map[ny][nx]===1) continue;
+          visited[ny][nx] = true;
+          parent[ny][nx] = cur;
+          q.push({x:nx,y:ny});
+        }
+      }
+      return null;
+    }
+
+    // WIN handling: confetti + overlay + Next button
+    const overlay = document.getElementById('overlay');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function onWin(){
+      // play confetti for 2s
+      const duration = 2000;
+      const end = Date.now() + duration;
+      (function frame(){
+        confetti({
+          particleCount: 6,
+          startVelocity: 20,
+          spread: 55,
+          origin: { x: Math.random()*0.6 + 0.2, y: 0 }
+        });
+        if(Date.now() < end) requestAnimationFrame(frame);
+      })();
+
+      // show overlay after short delay for dramatic effect
+      setTimeout(()=> {
+        overlay.classList.add('show');
+      }, 350);
+    }
+
+    nextBtn.addEventListener('click', ()=> {
+      // Aquí defines el comportamiento del botón Siguiente.
+      // Por ahora hacemos una redirección simulada o puedes llamar a la función que cargue el siguiente juego.
+      // window.location.href = 'juego_siguiente.html';
+      window.location.href = "./invitacion.html"; // Reemplaza con la URL deseada
+      overlay.classList.remove('show');
+      // opcional: reiniciar jugador para jugar de nuevo
+      player.x = start.x; player.y = start.y; draw();
+    });
+
+    // initial draw
+    draw();
+
+    // make canvas size responsive to container width while keeping square
+    function resizeCanvas(){
+      const box = document.getElementById('canvasBox');
+      const w = Math.min(box.clientWidth - 20, 800);
+      canvas.style.width = w + 'px';
+      canvas.style.height = w + 'px';
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+  })();
+  </script>
+</body>
+</html>

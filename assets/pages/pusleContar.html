@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Capibaras</title>
+
+    <style>
+        body {
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+
+.card {
+            
+            background-image: url('../img/banCelebration.png');
+            width: 450px;
+            height: 100vh;
+            padding: 2px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(71, 189, 24, 0.1);
+            text-align: center;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        
+        .capi {
+            width: 90px;
+        }
+
+        #opciones button {
+            font-size: 2rem;
+            padding: 10px 25px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 10px;
+            border: none;
+            background: #2196f3;
+            color: white;
+            transition: 0.2s;
+        }
+
+        #opciones button:hover {
+            background: #1976d2;
+        }
+
+        #resultado {
+            display: none;
+            margin-top: 30px;
+        }
+
+        #numero-correcto {
+            font-size: 6rem;
+            font-weight: bold;
+            color: #ff4081;
+        }
+
+        #nina {
+            width: 260px;
+            margin-top: 20px;
+        }
+
+        #btn-siguiente {
+            margin-top: 25px;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        #btn-siguiente:hover {
+            background: #3c8c40;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+
+        <h2 id="titulo">Ayuda a Ailyn a contar las capibaras </h2>
+        
+        <!-- Operación -->
+        <div id="operacion">
+            <img src="../img/capi-2.png" class="capi" alt="/">
+            <img src="../img/capi-2.png" class="capi" alt="/">
+            <img src="../img/capi-2.png" class="capi" alt="/">
+            <img src="../img/capi-2.png" class="capi" alt="/">
+            <img src="../img/capi-2.png" class="capi" alt="/">
+            <img src="../img/capi-2.png" class="capi" alt="/">
+            <img src="../img/capi-2.png" class="capi" alt="/">
+        </div>
+        
+        <!-- Opciones -->
+        <div id="opciones">
+            <button class="opcion">5</button>
+            <button class="opcion">7</button>
+            <button class="opcion">9</button>
+        </div>
+        
+        <!-- Resultado final -->
+        <div id="resultado">
+            <h1 id="numero-correcto"></h1>
+            
+        <div><span>Muy bien ..!</span></div>
+        <div>
+            
+            <img src="../img/AilynCelbration.png" id="nina">
+        </div>
+        
+        <a href="./pusleLaberinto.html" target="_self">
+            
+            
+            <button id="btn-siguiente">Siguiente</button>
+        </a>
+        </div>
+    </div>
+
+    
+    <!-- Librería de confeti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        const opciones = document.querySelectorAll(".opcion");
+        const operacion = document.getElementById("operacion");
+        const opcionesBox = document.getElementById("opciones");
+        const resultado = document.getElementById("resultado");
+        const numeroCorrecto = document.getElementById("numero-correcto");
+
+        opciones.forEach(btn => {
+            btn.addEventListener("click", () => {
+                if (btn.textContent == "7") {
+                    mostrarResultadoCorrecto();
+                    lanzarConfeti();
+                }
+            });
+        });
+
+        function mostrarResultadoCorrecto() {
+            operacion.style.display = "none";
+            opcionesBox.style.display = "none";
+
+            numeroCorrecto.textContent = "7";
+            resultado.style.display = "block";
+        }
+
+        function lanzarConfeti() {
+            const duration = 2000;
+            const end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 7,
+                    spread: 60
+                });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            })();
+        }
+
+        document.getElementById("btn-siguiente").addEventListener("click", () => {})
+            
+    </script>
+
+</body>
+</html>
