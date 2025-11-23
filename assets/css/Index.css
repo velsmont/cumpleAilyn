@@ -20,7 +20,7 @@ body {
 .card {
 
     width: 450px;
-    height: 100vh;
+    height: 550px;
     margin: 20px auto;
     padding: 2px;
     border-radius: 20px;
@@ -52,4 +52,5 @@ body {
     background: linear-gradient(225deg, #c2a5b9, #e6c4dc);
     box-shadow: -13px 13px 26px #8a7584,
         13px -13px 26px #fff9ff;
+
 }
