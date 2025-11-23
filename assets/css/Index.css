@@ -19,7 +19,7 @@ body {
 
 .card {
 
-    width: 450px;
+    width: 400px;
     height: 550px;
     margin: 20px auto;
     padding: 2px;
@@ -54,3 +54,4 @@ body {
         13px -13px 26px #fff9ff;
 
 }
+
