@@ -20,7 +20,7 @@ body {
 .card {
 
     width: 450px;
-    height: 100vw;
+    height: 100vh;
     margin: 20px auto;
     padding: 2px;
     border-radius: 20px;
