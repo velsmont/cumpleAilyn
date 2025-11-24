@@ -1,133 +1,119 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Invitación de Cumpleaños - Ailyn</title>
     <style>
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px);} 
+            to { opacity: 1; transform: translateY(0);} 
         }
 
         @keyframes float {
-            0% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-8px);
-            }
-
-            100% {
-                transform: translateY(0);
-            }
+            0% { transform: translateY(0);} 
+            50% { transform: translateY(-8px);} 
+            100% { transform: translateY(0);} 
         }
 
         body {
-            height: 100vh;
+            min-height: 100vh;
             font-family: 'Comic Sans MS', sans-serif;
             margin: 0;
             background: #ffeef6;
             display: flex;
             justify-content: center;
+            padding: 10px;
         }
 
         .card {
-            width: 450px;
-            height: 550px;
+            width: 100%;
+            max-width: 420px;
             background-image: url('../img/banCelebration.png');
-            margin: 20px;
-            padding: 2px;
+            background-size: cover;
+            padding: 10px;
             border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             text-align: center;
             animation: fadeIn 1.2s ease-out;
         }
 
         .header {
             background-image: url('../img/banRaibown.png');
-            background-size: 500px;
-            justify-content: center;
-            align-items: center;
-            padding: 2px;
+            background-size: cover;
+            padding: 5px;
             border-radius: 15px;
         }
-        .nombre{
-            background-image: url('../img/cinta03.png');
-            background-size:contain;
-        }
-        .nombre h2 {
-            display: inline-block;
-            font-size: 2.9rem;
-            margin: 10px 0;
-            color: #541075;
-            animation: fadeIn 1.4s;
-        }
-        .aside {
-            background-image: url('../img/banCelebration.png');
-            background-size: cover;
 
-        }
-
-   
-       
         .capi {
-            width: 180px;
+            width: 45%;
+            max-width: 180px;
             animation: float 3s infinite ease-in-out;
         }
-        .celebrar p {
-            font-size: 1rem;
-            margin: 10px 20px;
-            color:#9126c7;
-        }
-        .referencia p {
-            font-size: 1.2rem;
-            margin: 5px 0;
-            color:#e012b4;
+
+        .nombre {
+            background-image: url('../img/cinta03.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            margin: 10px auto;
+            padding: 10px;
         }
 
-        .falt{
+        .nombre h2 {
+            font-size: 2.3rem;
+            color: #541075;
+            margin: 5px 0;
+        }
+
+        .celebrar p {
+            font-size: 1rem;
+            margin: 10px 15px;
+            color: #9126c7;
+        }
+
+        .referencia p {
+            font-size: 1.1rem;
+            margin: 4px 0;
+            color: #e012b4;
+        }
+
+        .falt {
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-        .falt h3 {
-            color: #056168;
-            font-size: 1.8rem;
+            gap: 10px;
+            margin-top: 10px;
         }
 
-        .capifooter {
-            justify-content: center;
-            align-items: center;
-            padding: 2px;
+        .falt h3 {
+            color: #056168;
+            font-size: 1.5rem;
         }
+
         .capifooter img {
-            width: 50px;
+            width: 45px;
         }
+
         button {
-            width: 150px;
+            width: 75%;
+            max-width: 220px;
             background: #b35edc;
             color: #fff;
             border: none;
-            padding: 10px 20px;
+            padding: 12px;
             border-radius: 10px;
             cursor: pointer;
-            margin: 8px;
+            margin: 8px auto;
             font-size: 16px;
             transition: transform .2s;
         }
 
-        button:hover {
-            transform: scale(1.1);
+        button:hover { transform: scale(1.05); }
+
+        @media (max-width: 380px) {
+            .nombre h2 { font-size: 2rem; }
+            .referencia p { font-size: 1rem; }
+            .falt h3 { font-size: 1.3rem; }
         }
     </style>
 </head>
@@ -135,11 +121,11 @@
 <body>
     <div class="card">
         <div class="header">
-            <svg width="100%" height="120px">
+            <svg width="100%" height="100px">
                 <defs>
-                    <path id="curvaFiesta" d="M 110 100 Q 270 0 360 100" />
+                    <path id="curvaFiesta" d="M 50 80 Q 170 0 300 80" />
                 </defs>
-                <text font-size="32" fill="#b35edc" font-family="Comic Sans MS">
+                <text font-size="26" fill="#b35edc" font-family="Comic Sans MS">
                     <textPath href="#curvaFiesta" startOffset="50%" text-anchor="middle">
                         ¡Te invito a mi fiesta!
                     </textPath>
@@ -149,78 +135,38 @@
         </div>
 
         <div class="aside">
+            <div class="nombre"><h2>Ailyn</h2></div>
+            <div class="capifooter"><img src="../img/capi-3.png" alt=""></div>
 
-            <div class="nombre">
-
-                <h2>Ailyn</h2>
-            </div>
-            <div class="capifooter">
-                <img src="../img/capi-3.png"  alt="">
-            </div>    
             <div class="celebrar">
-
-               <p>¡Ven a celebrar mis <strong>7 años</strong> con juegos, pastel y abrazos de capibara 🐾!</p>
+                <p>¡Ven a celebrar mis <strong>7 años</strong> con juegos, pastel y abrazos de capibara 🐾!</p>
             </div>
-            
-            <div class="referencia">
 
+            <div class="referencia">
                 <p><strong>Sábado 29 de noviembre</strong></p>
                 <p><strong>4:30 PM</strong></p>
                 <p>Urb. Taurija Calle C MZ F Lt. 7</p>
             </div>
-            
-            <div class="falt">
 
+            <div class="falt">
                 <h3>No Faltes!</h3>
                 <img src="../img/capi-2.png" class="capi" alt=""/>
             </div>
 
             <button id="mapBtn">Cómo llegar</button>
             <button onclick="salir()">Salir</button>
-
-            <!-- Música -->
-           <!--
-            <audio id="music" loop>
-                <source src="/mnt/data/music.mp3" type="audio/mpeg">
-            </audio>
-            <button onclick="toggleMusic()">🎵 Música</button>
         </div>
-        -->
-
-
     </div>
 
     <script>
-        // Mapa
         const coords = "-12.003087,-77.069566";
         document.getElementById("mapBtn").onclick = () => {
             window.open(`https://www.google.com/maps/search/?api=1&query=${coords}`, "_blank");
         };
 
-        // Música
-        let playing = false;
-        function toggleMusic() {
-            const music = document.getElementById("music");
-            if (!playing) {
-                music.play();
-                playing = true;
-            } else {
-                music.pause();
-                playing = false;
-            }
-        }
-
-
         function salir() {
-  window.location.replace("https://google.com");
-}
-        
-
-        
+            window.location.replace("https://google.com");
+        }
     </script>
 </body>
-
-
 </html>
-
-
