@@ -16,7 +16,7 @@
   }
   html,body{ height:450px; margin:0; background:var(--bg); -webkit-tap-highlight-color: transparent; }
   .app {
-    width:440px;
+    
     min-height:100vh;
     display:flex;
     flex-direction:column;
@@ -45,6 +45,8 @@
 
   /* canvas area */
   .canvas-box {
+    display:flex;
+    justify-content:space-around;
     width:100%;
     max-width:760px;
     background:linear-gradient(#eef6ff,#ffffff);
@@ -53,7 +55,7 @@
     box-shadow:0 10px 30px rgba(20,30,50,0.06);
     box-sizing:border-box;
   }
-  canvas { width:100%; height:auto; display:block; border-radius:6px; background:transparent; touch-action:none; }
+  canvas { width:90%; height:auto; display:block; border-radius:6px; background:transparent; touch-action:none; }
 
   /* controls */
   .controls {
@@ -467,4 +469,5 @@
   </script>
 </body>
 </html>
+
 
