@@ -1,40 +1,122 @@
 <!doctype html>
 <html lang="es">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ailyn 7 años 🎉</title>
-  <link rel="stylesheet" href="./assets/css/Index.css" />
+
+  <style>
+    :root {
+      --rosa-suave: #efdcf5;
+      --rosa-fuerte: #c075c0;
+      --rosa-brillante: #e739bc;
+      --btn1: #b35edc;
+      --btn2: #d084f0;
+      --sombra-btn: rgba(179, 94, 220, 0.45);
+      --sombra-card: rgba(224, 77, 121, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background: linear-gradient(180deg, #fffaf6 0%, #f7fbff 100%);
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 390px;
+      background: white;
+      border-radius: 22px;
+      padding: 15px;
+      box-shadow: 0 6px 14px var(--sombra-card);
+      animation: fadeIn .8s ease-out;
+      overflow: hidden;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .intro {
+      background-image: url('./assets/img/banCelebration.png');
+      background-size: cover;
+      background-position: center;
+      padding: 25px 10px 35px;
+      text-align: center;
+      border-radius: 18px;
+    }
+
+    .intro img {
+      width: 70%;
+      max-width: 230px;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+    }
+
+    .intro h1 {
+      margin-top: 10px;
+      color: var(--rosa-fuerte);
+      font-size: 1.9rem;
+      font-weight: 700;
+    }
+
+    .intro p {
+      color: var(--rosa-brillante);
+      font-size: 1.05rem;
+      margin-bottom: 25px;
+    }
+
+    /* BOTÓN MEJORADO */
+    .enterBtn {
+      padding: 14px 35px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, var(--btn1), var(--btn2));
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      box-shadow: 0 6px 15px var(--sombra-btn);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .enterBtn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 9px 18px var(--sombra-btn);
+    }
+
+    .enterBtn:active {
+      transform: scale(0.97);
+    }
+
+    a { text-decoration: none; }
+
+    @media (max-width: 380px) {
+      .intro h1 { font-size: 1.7rem; }
+      .intro p { font-size: 1rem; }
+      .enterBtn { padding: 12px 28px; font-size: 1rem; }
+    }
+  </style>
 </head>
 
 <body>
-
-  <!-- Intro pantalla de inicio con la foto subida -->
-  
   <div class="card">
-
     <div class="intro" id="intro">
       <img src="./assets/img/Ailyn.png" alt="Ailyn saludando" id="introImg">
       <h1>¡Hola! Soy Ailyn 👋</h1>
       <p>Pulsa entrar para empezar la capiaventura...</p>
-      
+
       <a href="./assets/pages/pusleContar.html" target="_self">
-        
-        <button rel="" class="enterBtn" id="enterBtn">Entrar</button>
+        <button class="enterBtn" id="enterBtn">Entrar</button>
       </a>
-      
-      
     </div>
   </div>
-  
-  <!-- Contenido principal de la invitación -->
-  
-  
-  
-  
-  <script src="script.js"></script>
-  
-  </body>
-  
-  </html>
+</body>
+</html>
