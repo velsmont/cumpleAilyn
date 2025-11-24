@@ -4,192 +4,248 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>cumpleaños Ailyn</title>
+
 <style>
-  :root{
-    --bg:#f7fbff;
-    --wall:#2b2f36;
-    --path:#ffffff;
-    --goal:#a6e7a6;
-    --ui:#2b7cff;
-    --btn-bg:#ffffff;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  }
-  html,body{ height:450px; margin:0; background:var(--bg); -webkit-tap-highlight-color: transparent; }
-  .app {
-    
+
+:root{
+    --rosa:#ff69b4;
+    --rosa-osc:#e75a9f;
+    --azul:#2196f3;
+    --azul-osc:#1976d2;
+
+    --fondo:#f7fbff;
+    --fondo-card: rgba(255,255,255,0.65);
+
+    --shadow:0 4px 16px rgba(255,120,170,0.18);
+    --shadow-btn:0 6px 16px rgba(0,0,0,0.12);
+
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    background:var(--fondo);
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.app{
     min-height:100vh;
     display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:flex-start;
-    padding:12px;
-    box-sizing:border-box;
-  }
-  h1{ margin:8px 0 6px; font-size:18px; color:#123; text-align:center; }
-  
-  
-  .card {
-            background-image: url('../img/banCelebration.png');
-            width: 450px;
-            margin: 20px;
-            padding: 2px;
-            border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            animation: fadeIn 1.2s ease-out;
-        }
+    justify-content:center;
+    align-items:flex-start;
+    padding:20px 10px;
+}
 
-  
-  
+/* TARJETA */
+.card{
+    background-image: url('../img/banCelebration.png');
+    background-size: cover;
+    background-position:center;
+    width: 95%;
+    max-width: 440px;
+    padding:20px 10px 30px;
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    animation: fadeIn 1s ease-out;
+    text-align:center;
+    backdrop-filter: blur(6px);
+}
 
+@keyframes fadeIn{
+    from{opacity:0; transform: translateY(10px);}
+    to{opacity:1; transform: translateY(0);}
+}
 
-  /* canvas area */
-  .canvas-box {
-    display:flex;
-    justify-content:space-around;
+h1{
+    margin:15px 0;
+    font-size:1.4rem;
+    color:var(--rosa-osc);
+    text-shadow:0 2px 6px rgba(255,105,180,0.25);
+}
+
+/* CAJA CANVAS */
+.canvas-box{
     width:100%;
-    max-width:760px;
-    background:linear-gradient(#eef6ff,#ffffff);
-    border-radius:12px;
-    padding:10px;
-    box-shadow:0 10px 30px rgba(20,30,50,0.06);
-    box-sizing:border-box;
-  }
-  canvas { width:90%; height:auto; display:block; border-radius:6px; background:transparent; touch-action:none; }
-
-  /* controls */
-  .controls {
-    margin-top:10px;
-    display:flex;
-    gap:10px;
-    justify-content:center;
-    align-items:center;
-    flex-wrap:wrap;
-  }
-  .ctrl-btn {
-    width:54px;
-    height:54px;
-    border-radius:10px;
-    background:var(--btn-bg);
-    border:1px solid rgba(0,0,0,0.06);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:20px;
-    color:var(--ui);
-    box-shadow:0 6px 12px rgba(30,60,120,0.06);
-    user-select:none;
-    -webkit-user-select:none;
-  }
-  .ctrl-grid {
-    display:grid;
-    grid-template-columns: repeat(3, 54px);
-    gap:8px;
-    align-items:center;
-    justify-content:center;
-  }
-  .info {
+    padding:8px;
+    border-radius:16px;
+    background:var(--fondo-card);
+    box-shadow:var(--shadow);
     margin-top:8px;
-    color:#444;
-    font-size:14px;
-    text-align:center;
-  }
+}
 
-  /* overlay celebration */
-  .overlay {
-    position: fixed;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0,0,0,0.36);
-    z-index: 9999;
-    padding:16px;
-  }
-  .overlay.show { display:flex; }
-  .cele {
-    background:white;
-    padding:18px;
+canvas{
+    width:100%;
+    height:auto;
+    display:block;
     border-radius:12px;
-    max-width:420px;
-    text-align:center;
-    box-shadow:0 20px 50px rgba(0,0,0,0.25);
-  }
-  .cele img { width:220px; max-width:80%; display:block; margin:10px auto 6px; }
-  .cele h2 { margin:6px 0; font-size:20px; color:#c93535; }
-  .cele p { margin:0 0 12px; color:#444; }
+    background:transparent;
+    touch-action:none;
+}
 
-  .btn-primary {
-    background: #4caf50;
-    color:#fff;
-    border:0;
-    padding:10px 16px;
-    border-radius:10px;
-    font-size:16px;
+/* CONTROLES */
+.controls{
+    margin-top:18px;
+    display:flex;
+    justify-content:center;
+}
+
+.ctrl-grid{
+    display:grid;
+    grid-template-columns:repeat(3,67px);
+    gap:10px;
+}
+
+.ctrl-btn{
+    width:67px;
+    height:67px;
+    border-radius:16px;
+    background:white;
+    border:none;
+    font-size:24px;
+    font-weight:700;
+    color:var(--azul-osc);
+    box-shadow:var(--shadow-btn);
+    display:flex;
+    justify-content:center;
+    align-items:center;
     cursor:pointer;
-  }
+    transition:0.2s;
+}
 
-  /* responsive tweaks */
-  @media (max-width:520px){
-    .ctrl-grid { gap:6px; grid-template-columns: repeat(3, 48px); }
-    .ctrl-btn { width:48px; height:48px; font-size:18px; border-radius:8px; }
-    .cele img { width:160px; }
-  }
-</style>  
+.ctrl-btn:active{
+    transform:scale(0.92);
+    background:var(--azul);
+    color:white;
+}
+
+/* TEXTO INFO */
+.info{
+    margin-top:10px;
+    font-size:15px;
+    color:#555;
+}
+
+/* OVERLAY FINAL */
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:18px;
+    z-index:1000;
+}
+
+.overlay.show{
+    display:flex;
+}
+
+.cele{
+    background:white;
+    width:90%;
+    max-width:380px;
+    padding:20px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 8px 30px rgba(0,0,0,0.25);
+}
+
+.cele img{
+    width:70%;
+    max-width:210px;
+}
+
+.cele h2{
+    color:var(--rosa);
+    margin:10px 0 8px;
+    font-size:1.5rem;
+}
+
+.cele p{
+    color:#555;
+    margin-bottom:14px;
+}
+
+/* BOTÓN SIGUIENTE */
+.btn-primary{
+    background:linear-gradient(135deg, var(--azul), var(--azul-osc));
+    color:white;
+    border:none;
+    padding:14px 28px;
+    font-size:17px;
+    border-radius:14px;
+    cursor:pointer;
+    box-shadow:0 6px 14px rgba(33,150,243,0.4);
+    transition:0.2s;
+}
+
+.btn-primary:active{
+    transform:scale(0.92);
+}
+
+@media (max-width:450px){
+    .ctrl-grid{
+        grid-template-columns:repeat(3,60px);
+        gap:8px;
+    }
+    .ctrl-btn{
+        width:60px;
+        height:60px;
+        font-size:22px;
+    }
+}
+
+</style>
 </head>
+
 <body>
-  <div class="app">
+<div class="app">
     <div class="card">
-      <h1>Ayuda a Ailyn a encontrar la capibara..</h1>
 
-      <div class="canvas-box" id="canvasBox">
-        <!-- Canvas: tamaño fijo en pixels (se ajusta en CSS) -->
-        <canvas id="maze" width="800" height="800" aria-label="Laberinto"></canvas>
-      </div>
+        <h1>Ayuda a Ailyn a encontrar la capibara</h1>
 
-      <div class="controls" aria-hidden="false">
-        <div class="ctrl-grid" role="group" aria-label="Controles">
-          <div></div>
-          <div class="ctrl-btn" id="btn-up">↑</div>
-          <div></div>
-
-          <div class="ctrl-btn" id="btn-left">←</div>
-          <div class="ctrl-btn" id="btn-down">↓</div>
-          <div class="ctrl-btn" id="btn-right">→</div>
+        <div class="canvas-box" id="canvasBox">
+            <canvas id="maze" width="800" height="800"></canvas>
         </div>
-      </div>
 
-      <div class="info">Usa los botones para nover </div>
+        <div class="controls">
+            <div class="ctrl-grid">
+                <div></div>
+                <div class="ctrl-btn" id="btn-up">↑</div>
+                <div></div>
+
+                <div class="ctrl-btn" id="btn-left">←</div>
+                <div class="ctrl-btn" id="btn-down">↓</div>
+                <div class="ctrl-btn" id="btn-right">→</div>
+            </div>
+        </div>
+
+        <div class="info">Usa los botones para mover</div>
+
     </div>
-  </div>
+</div>
 
-  <!-- Celebration overlay -->
-  <div class="overlay" id="overlay" role="dialog" aria-modal="true">
-    <div class="cele" id="cele">
-      <h2>¡Lo lograste..! 🎉</h2>
-      <p>Si llegaste hasta aqui..dale siguiente para una sorpresa..</p>
-      <!-- capibara image (meta) -->
-      <div>
-
-        <img src="../img/AilynCapibara.png" alt="">
-      </div>
-
-      <div style="margin-top:10px;">
-
-        <a href="./Invitacion.html" target="_self">
-
-          <button class="btn-primary"  alt="">Siguiente</button>
+<!-- Overlay de victoria -->
+<div class="overlay" id="overlay">
+    <div class="cele">
+        <h2>¡Lo lograste..! 🎉</h2>
+        <p>Si llegaste hasta aquí… dale siguiente para una sorpresa ✨</p>
+        <img src="../img/AilynCapibara.png">
+        <br>
+        <a href="./Invitacion.html">
+            <button class="btn-primary">Siguiente</button>
         </a>
-      
-      </div>
     </div>
-  </div>
+</div>
 
-  <!-- confetti library -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <script>
-  (function(){
+<!-- Mantengo TU SCRIPT original sin alterarlo -->
+<script>
+(function(){
     // CONFIG
     const CHAR_SRC = '../img/AilynRun.png'; // imagen niña (confirmada)
     const GOAL_IMG = '../img/capi-3.png'; // capibara (confirmada)
@@ -466,9 +522,14 @@
     resizeCanvas();
 
   })();
-  </script>
+
+</script>
+
 </body>
 </html>
+
+
+
 
 
 
